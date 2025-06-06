@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/csv"
 	"fmt"
 	"log"
@@ -14,7 +15,7 @@ import (
 )
 
 type Stock struct {
-	company, price, change, currency string
+	company, price, change, currency, timestamp string
 }
 
 func getCurrencyByTicker(ticker string) string {
@@ -56,31 +57,33 @@ func extractTickerFromURL(url string) string {
 	return ""
 }
 
-func main() {
-	ticker := []string{
-		"WIPRO.BO",
-		"%5EBSESN",
-		"ES%3DF",
-		"MSFT",
-		"IBM",
-		"GE",
-		"UNP",
-		"COST",
-		"MCD",
-		"V",
-		"WMT",
-		"DIS",
-		"MMM",
-		"INTC",
-		"AXP",
-		"AAPL",
-		"BA",
-		"CSCO",
-		"GS",
-		"JPM",
-		"CRM",
-		"VZ",
+func readTickersFromTxt(filename string) ([]string, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, err
 	}
+	defer file.Close()
+
+	var tickers []string
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		ticker := strings.TrimSpace(scanner.Text())
+		if ticker != "" && !strings.HasPrefix(ticker, "#") { // Skip empty lines and comments
+			tickers = append(tickers, ticker)
+		}
+	}
+
+	return tickers, scanner.Err()
+}
+
+func main() {
+	ticker, err := readTickersFromTxt("tickers.txt")
+	if err != nil {
+		log.Fatalf("Error reading tickers: %v", err)
+	}
+
+	fmt.Printf("Loaded %d tickers from file\n", len(ticker))
 
 	stocks := []Stock{}
 	var allStocks []Stock
@@ -136,6 +139,9 @@ func main() {
 			}
 			fmt.Println("---")
 
+			currentTime := time.Now().Format("2006-01-02 15:04:05")
+			stock.timestamp = currentTime
+
 			stocks = append(stocks, stock)
 		}
 	})
@@ -171,6 +177,9 @@ func main() {
 				fmt.Printf("Change: %s\n", stock.change)
 			}
 			fmt.Println("---")
+
+			currentTime := time.Now().Format("2006-01-02 15:04:05")
+			stock.timestamp = currentTime
 
 			stocks = append(stocks, stock)
 		}
@@ -230,6 +239,9 @@ func main() {
 			}
 			fmt.Println("---")
 
+			currentTime := time.Now().Format("2006-01-02 15:04:05")
+			stock.timestamp = currentTime
+
 			stocks = append(stocks, stock)
 		}
 	})
@@ -288,6 +300,7 @@ func main() {
 
 	writer.Write(headers)
 
+	// Write all stock data
 	for _, stock := range allStocks {
 		record := []string{
 			stock.company,
@@ -298,5 +311,14 @@ func main() {
 		writer.Write(record)
 	}
 
-	fmt.Println("Data saved to stocks.csv")
+	// Add metadata section at the end
+	writer.Write([]string{}) // Empty row for separation
+	writer.Write([]string{"METADATA", "", "", ""})
+	writer.Write([]string{"Last Updated", time.Now().Format("2006-01-02 15:04:05"), "", ""})
+	writer.Write([]string{"Last Updated (UTC)", time.Now().UTC().Format("2006-01-02 15:04:05"), "", ""})
+	writer.Write([]string{"Total Stocks Scraped", fmt.Sprintf("%d", len(allStocks)), "", ""})
+	writer.Write([]string{"Total Tickers Processed", fmt.Sprintf("%d", len(ticker)), "", ""})
+	writer.Write([]string{"Success Rate", fmt.Sprintf("%.1f%%", float64(len(allStocks))/float64(len(ticker))*100), "", ""})
+
+	fmt.Println("Data saved to stocks.csv with metadata")
 }

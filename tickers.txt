@@ -1,0 +1,23 @@
+# Indian stocks
+WIPRO.BO
+
+# Indices
+%5EBSESN
+ES%3DF
+
+# US stocks
+MSFT
+IBM
+GE
+UNP
+COST
+MCD
+V
+WMT
+AAPL
+BA
+CSCO
+GS
+JPM
+CRM
+VZ 
