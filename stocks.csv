@@ -1,7 +1,7 @@
 company,price,change,currency
 Wipro Limited (WIPRO.BO),248.60 ,+(0.26%) ,INR
 S&P BSE SENSEX (^BSESN),"82,188.99 ",+(0.92%) ,
-E-Mini S&P 500 Jun 25 (ES=F),"5,971.25 ",+(0.42%) ,
+E-Mini S&P 500 Jun 25 (ES=F),"5,973.50 ",+(0.46%) ,
 Microsoft Corporation (MSFT),467.68 ,+(0.82%) ,USD
 International Business Machines Corporation (IBM),266.86 ,+(0.50%) ,USD
 GE Aerospace (GE),251.92 ,+(0.41%) ,USD
@@ -19,8 +19,8 @@ JPMorgan Chase & Co. (JPM),261.95 ,(-0.86%) ,USD
 Verizon Communications Inc. (VZ),43.30 ,+(0.14%) ,USD
 
 METADATA,,,
-Last Updated,2025-06-06 15:58:43,,
-Last Updated (UTC),2025-06-06 10:28:43,,
+Last Updated,2025-06-06 16:10:26,,
+Last Updated (UTC),2025-06-06 10:40:26,,
 Total Stocks Scraped,18,,
 Total Tickers Processed,18,,
 Success Rate,100.0%,,

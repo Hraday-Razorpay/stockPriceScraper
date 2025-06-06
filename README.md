@@ -60,14 +60,14 @@ Microsoft Corporation (MSFT) | 467.68 | +(0.82%) | USD
 ```
 
 The CSV file includes a header row, followed by stock data and a metadata section at the end.
-
+Example -:
 ```
-company,price,change,currency
-Infosys,₹1,450.00,+10.00,INR
-AAPL,$189.50,-0.70,USD
-
-Total Stocks Scraped: 2
-Scraping Time: 2025-06-06 15:45:00
+METADATA,,,
+Last Updated,2025-06-06 16:10:26,,
+Last Updated (UTC),2025-06-06 10:40:26,,
+Total Stocks Scraped,18,,
+Total Tickers Processed,18,,
+Success Rate,100.0%,,
 ```
 
 ## 🧠 How It Works
